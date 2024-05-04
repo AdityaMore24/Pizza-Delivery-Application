@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/logo4"
+        android:label="Pizza Delivery App"
+        android:roundIcon="@mipmap/logo4"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PizzaDeliveryApp"
+        tools:targetApi="31">
+        <activity
+            android:name=".activities.ChefActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".activities.DeliveryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ChefActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.OrderStatusActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.DetailedViewActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.CartActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.RegistrationActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.WelcomeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.PizzaDeliveryApp.NoActionBar" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+
+</manifest>

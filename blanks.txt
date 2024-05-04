@@ -1,0 +1,125 @@
+String url = "https://jsonplaceholder.typicode.com/users";
+
+        StringRequest request = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONArray jsonarray = new JSONArray(response);
+                    JSONObject jsonObject = jsonarray.getJSONObject(0);
+                    String name = jsonObject.getString("name");
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+RealTime Database :
+
+https://pizzadeliveryapp-b7639-default-rtdb.firebaseio.com/
+
+
+Images :
+
+Veg Pizza : https://www.sharmispassions.com/wp-content/uploads/2010/11/VegPizza1.jpg
+Cheese Pizza : https://sallysbakingaddiction.com/wp-content/uploads/2013/11/Homemade-Pizza-Crust-7.jpg
+Chicken Pizza : https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/216054.jpg
+
+
+
+		//Firebase Database (Adapter)
+
+public class HomeVerAdapter extends FirebaseRecyclerAdapter<HomeVerModel, HomeVerAdapter.ViewHolder> {
+
+    /**
+     * Initialize a {@link RecyclerView.Adapter} that listens to a Firebase query. See
+     * {@link FirebaseRecyclerOptions} for configuration options.
+     *
+     * @param options
+     */
+
+    public HomeVerAdapter(@NonNull FirebaseRecyclerOptions<HomeVerModel> options) {
+        super(options);
+    }
+
+    @Override
+    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull HomeVerModel model) {
+
+        holder.name.setText(model.getName());
+        holder.rating.setText(model.getRating());
+        holder.timing.setText(model.getTiming());
+        holder.price.setText(model.getPrice());
+
+        Glide.with(holder.imageView.getContext())
+                .load(model.getImage())
+                .placeholder(com.firebase.ui.database.R.drawable.common_google_signin_btn_icon_dark)
+                .error(com.firebase.ui.database.R.drawable.common_google_signin_btn_icon_light)
+                .into(holder.imageView);
+
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_vertical_item, parent, false));
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        ImageView imageView;
+        TextView name, timing, rating, price;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.ver_img);
+            name = itemView.findViewById(R.id.name);
+            rating = itemView.findViewById(R.id.rating);
+            timing = itemView.findViewById(R.id.timing);
+            price = itemView.findViewById(R.id.price);
+        }
+    }
+
+}
+
+
+
+
+
+		//Firebase Database (Home Fragment)
+        homeVerticalRec = (RecyclerView)root.findViewById(R.id.home_ver_rec);
+
+        FirebaseRecyclerOptions<HomeVerModel> options =
+                new FirebaseRecyclerOptions.Builder<HomeVerModel>()
+                        .setQuery(FirebaseDatabase.getInstance().getReference().child("menu"), HomeVerModel.class)
+                        .build();
+
+
+
+        homeVerAdapter = new HomeVerAdapter(options);
+        homeVerticalRec.setAdapter(homeVerAdapter);
+        homeVerticalRec.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        homeVerticalRec.setHasFixedSize(true);
+        homeVerticalRec.setNestedScrollingEnabled(false);
+
+
+@Override
+    public void onStart() {
+        super.onStart();
+        homeVerAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        homeVerAdapter.stopListening();
+    }
